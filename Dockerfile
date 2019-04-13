@@ -9,13 +9,15 @@ ENV ROOT_PASSWORD root
 RUN apk add --no-cache \
            openssh \
     \
-# 	&& addgroup -g 82 -S www-data \
-# 	&& adduser -u 82 -D -S -h /var/cache/nginx -G www-data www-data \
+	&& addgroup -g 82 -S www-data \
+	&& adduser -u 82 -D -S -h /var/cache/nginx -G www-data www-data \
     && sed -i s/#PermitRootLogin.*/PermitRootLogin\ yes/ /etc/ssh/sshd_config \
     && echo "root:${ROOT_PASSWORD}" | chpasswd \
     && rm -rf /var/cache/apk/*
 
 COPY entrypoint.sh /usr/local/bin/
+
+RUN chmod u+x /usr/local/bin/entrypoint.sh
 
 WORKDIR /root
 
